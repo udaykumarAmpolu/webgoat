@@ -8,6 +8,9 @@
 
 # Important
 
+### The WebGoat Lesson Server, is currently **UNDER MAJOR DEVELOMENT**.
+As of November 18th 2016, the version "7.1" is considered the first **STABLE** version of a major architecture and UI changes.
+
 This is the development version of WebGoat 8, if you are looking for a released stable version please go to: https://github.com/WebGoat/WebGoat/wiki/Running-WebGoat
 
 

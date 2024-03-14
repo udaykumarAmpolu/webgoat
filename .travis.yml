@@ -3,7 +3,16 @@ jdk:
   - oraclejdk8
 install: "/bin/true"
 script:
+  - mvn clean install -q
+  - git clone -b develop https://github.com/WebGoat/WebGoat-Lessons.git
+  - mvn -file ./WebGoat-Lessons/pom.xml clean package -q
+  - cp -fa ./WebGoat-Lessons/target/plugins/*.jar ./webgoat-container/src/main/webapp/plugin_lessons/
+  # Start the container this will make sure we do not see the debug logging of the Tomcat 7 Maven plugin
+  # which seems to always be set to DEBUG this will fail the build because we generate too much logging
+  - nohup bash -c "java -jar ./webgoat-standalone/target/webgoat-standalone-7.1-SNAPSHOT-exec.jar --port 8888 2>&1 &"
+  - if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then mvn "-Dbuild.number=$TRAVIS_BUILD_NUMBER" -q clean install failsafe:integration-test; else mvn -q failsafe:integration-test; fi
   - mvn clean install
+  - mvn -Dsonar.scm.exclusions.disabled sonar:sonar
   - if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then mvn "-Dbuild.number=$TRAVIS_BUILD_NUMBER" clean install; else mvn clean install; fi
 cache:
   directories:
@@ -46,4 +55,14 @@ addons:
     build_command_prepend: "mvn clean"
     build_command: "mvn -DskipTests=true package"
     branch_pattern: coverity_scan
+    sonarcloud:
+      organization: "udaykumarAmpolu"
+      token:
+          secure: "21e3478ea94ba7c575ac9b43414a3b1f6bf6aa04"
+on:
+  push:
+    branches:
+      - main
+      - branch-develop
+      - develop            
 
