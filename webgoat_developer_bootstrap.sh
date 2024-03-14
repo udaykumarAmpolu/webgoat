@@ -98,9 +98,7 @@ developer_bootstrap() {
     echo -e "FYI: This Developer Bootstrap Script for WebGoat requires: Git, Java JDK and Maven accessible on the path"
 
     ## test for require features
-    features git mvn java 
-
-    return $1
+    features git mvn java || return $?
 
     # Clone WebGoat from github
     if [ ! -d "WebGoat" ]; then
@@ -118,61 +116,21 @@ developer_bootstrap() {
         )
     fi
 
-    # Clone WebGoat-lessons from GitHub if they don't exist
-    if [ ! -d "WebGoat-Lessons" ]; then
-        horizontal_rule
-        echo -e -e  "$COL_CYAN Cloning the WebGoat Lessons repository $COL_RESET"
-        git clone https://github.com/WebGoat/WebGoat-Lessons.git
-    else
-        horizontal_rule
-        (
-            echo -e "$COL_YELLOW The WebGoat Lesson repo has already been cloned before, pulling upstream changes. $COL_RESET"
-            cd WebGoat-Lessons || {
-                echo -e >&2 "$COL_RED *** ERROR: Could not cd into the WebGoat-Lessons Directory $COL_RESET"
-                return 1
-            }
-            git pull origin develop
-        )
-    fi
-
-    # Compile and Install the WebGoat lesson server
-    horizontal_rule
-    echo -e "$COL_BLUE Compiling and installing the WebGoat Container lesson server..... $COL_RESET"
-    mvn -q -DskipTests -file WebGoat/pom.xml clean compile install || {
-        echo -e >&2 "$COL_RED *** ERROR: Could not compile the WebGoat Container. $COL_RESET"
-        return 1
-    }
-    echo -e "$COL_GREEN SUCCESS: Compiled the WebGoat Container successfully! $COL_RESET"
-
-    # Compile and package the WebGoat Lessons
-    horizontal_rule
-    echo -e "$COL_BLUE Compiling and installing the WebGoat Lessons $COL_RESET"
-    mvn -q -DskipTests -file WebGoat-Lessons/pom.xml package || {
-        echo -e >&2 "$COL_RED *** ERROR: Could not compile the WebGoat Container. $COL_RESET"
-        return 1
-    }
-    echo -e "$COL_GREEN SUCCESS: Compiled the WebGoat Lessons successfully! $COL_RESET"
-
-    # Copy the Lessons into the WebGoat-Container
-    horizontal_rule
-    echo -e "$COL_BLUE Copying the compiled lessons jars into the container so we can start the lesson server with some base lessons, $COL_RESET"
-    cp -fa ./WebGoat-Lessons/target/plugins/*.jar ./WebGoat/webgoat-container/src/main/webapp/plugin_lessons/
-
     # Start the embedded Tomcat server
     echo -e "$COL_MAGENTA"
     horizontal_rule
     horizontal_rule
     horizontal_rule
     horizontal_rule
-    echo -e "$COL_MAGENTA"
-    echo -e "$COL_CYAN ***** Starting WebGoat using the embedded Tomcat ***** $COL_RESET"
-    echo -e " Please be patient.... The startup of the server can take from 30s to 3 minutes."
-    echo -e " WebGoat will be ready for you when you see the following message on the command prompt:"
-    echo -e "$COL_YELLOW INFO: Starting ProtocolHandler ["http-bio-8080"] $COL_RESET"
-    echo -e "$COL_CYAN When you see the message above, open a web browser and navigate to http://localhost:8080/WebGoat/ $COL_RESET"
-    echo -e " To stop the WebGoat and Tomcat Execution execution, press CTRL + C"
-    echo -e "$COL_RED If you close this terminal window, Tomcat and WebGoat will stop running $COL_RESET"
-    echo -e "$COL_MAGENTA"
+    echo "$COL_MAGENTA"
+    echo "$COL_CYAN ***** Starting WebGoat using the embedded Tomcat ***** $COL_RESET"
+    echo " Please be patient.... The startup of the server takes about 5 seconds..."
+    echo " WebGoat will be ready for you when you see the following message on the command prompt:"
+    echo "$COL_YELLOW INFO: Starting ProtocolHandler ["http-bio-8080"] $COL_RESET"
+    echo "$COL_CYAN When you see the message above, open a web browser and navigate to http://localhost:8080/WebGoat/ $COL_RESET"
+    echo " To stop the WebGoat and Tomcat Execution execution, press CTRL + C"
+    echo "$COL_RED If you close this terminal window, Tomcat and WebGoat will stop running $COL_RESET"
+    echo "$COL_MAGENTA"
     horizontal_rule
     horizontal_rule
     horizontal_rule
@@ -181,7 +139,7 @@ developer_bootstrap() {
     sleep 5
 
     # Starting WebGoat
-    mvn -q -DskipTests -file WebGoat/pom.xml -pl webgoat-container tomcat7:run-war
+    mvn -q -pl webgoat-container spring-boot:run
 }
 
 # Start main script
