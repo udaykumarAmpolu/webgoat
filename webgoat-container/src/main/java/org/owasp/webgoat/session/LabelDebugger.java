@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class LabelDebugger implements Serializable {
 
-    private boolean isEnabled = false;
+    private boolean enabled = false;
 
     /**
      * <p>isEnabled.</p>
@@ -18,14 +18,29 @@ public class LabelDebugger implements Serializable {
      * @return a boolean.
      */
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     /**
-     * <p>enable.</p>
+     * <p>Enables label debugging</p>
      */
     public void enable() {
-        this.isEnabled = true;
+        this.enabled = true;
+    }
+
+    /**
+     * <p>Disables label debugging</p>
+     */
+    public void disable() {
+        this.enabled = false;
+    }
+
+    /**
+     * <p>Sets the status to enabled</p>
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled)  {
+        this.enabled = enabled;
     }
 
 }

@@ -15,7 +15,9 @@ define(['jquery',
     'goatApp/view/UserAndInfoView',
     'goatApp/view/MenuButtonView',
     'goatApp/model/LessonInfoModel',
-    'goatApp/view/TitleView'
+    'goatApp/view/TitleView',
+    'goatApp/model/LessonProgressModel',
+    'goatApp/view/LessonProgressView'
     ], 
     function($,
         _,
@@ -34,13 +36,18 @@ define(['jquery',
         UserAndInfoView,
         MenuButtonView,
         LessonInfoModel,
-        TitleView
+        TitleView,
+        LessonProgressModel,
+        LessonProgressView
+
     ) {
         'use strict'
         
         
         var Controller = function(options) {
             this.lessonContent = new LessonContentModel();
+            this.lessonProgressModel = new LessonProgressModel();
+            this.lessonProgressView = new LessonProgressView(this.lessonProgressModel);
             this.lessonView = options.lessonView;
 
             _.extend(Controller.prototype,Backbone.Events);
@@ -116,6 +123,7 @@ define(['jquery',
                     this.sourceView = new SourceView();
                     this.lessonHintView = new HintView();
                     this.cookieView = new CookieView();
+
                     //TODO: instantiate model with values (not sure why was not working before)
                     var paramModel = new ParamModel({});
                     paramModel.set('scrParam',this.lessonContent.get('scrParam'));
@@ -127,6 +135,7 @@ define(['jquery',
                     $('.lesson-help').hide();
                 }
                 this.trigger('menu:reload');
+                this.lessonProgressModel.completed();
             };
 
             this.addCurHelpState = function (curHelp) {
@@ -179,8 +188,9 @@ define(['jquery',
                 $.ajax({
                     url:'service/restartlesson.mvc',
                     method:'GET'
-                }).done(function(text) {
-                    console.log("Received a response from the restart servlet: '" + text + "'");
+                }).done(function() {
+                    //Log shows warning, see https://bugzilla.mozilla.org/show_bug.cgi?id=884693
+
                     // Explicitly loading the lesson instead of triggering an
                     // event in goatRouter.navigate().
                     self.loadLesson(self.scr,self.menu);

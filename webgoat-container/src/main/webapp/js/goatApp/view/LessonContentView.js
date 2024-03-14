@@ -24,15 +24,16 @@ define(['jquery',
         
         //TODO: reimplement this in custom fashion maybe?
         makeFormsAjax: function () {
+            var $form = $('form');
             var options = {
                 success:this.reLoadView.bind(this),
                 url: this.model.urlRoot,
-                type:'GET'
+                type: $form.attr('method')
                 // $.ajax options can be used here too, for example: 
                 //timeout:   3000 
             };
             //hook forms //TODO: clarify form selectors later
-            $("form").ajaxForm(options);
+            $form.ajaxForm(options);
         },
 
         ajaxifyAttackHref: function() {  // rewrite any links with hrefs point to relative attack URLs             
@@ -46,10 +47,10 @@ define(['jquery',
                 $(el).click(function(event) {
                     event.preventDefault();
                     var _url = $(el).attr('link');
-                    console.log("About to GET " + _url);
-                    $.get(_url)
+                    console.log("About to POST " + _url);
+                    $.post(_url)
                         .done(self.reLoadView.bind(self))
-                        .fail(function() { alert("failed to GET " + _url); });
+                        .fail(function() { alert("failed to POST " + _url); });
                 });
             });
         },

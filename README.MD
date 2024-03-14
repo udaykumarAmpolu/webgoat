@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/WebGoat/WebGoat/badge.svg?branch=master&service=github)](https://coveralls.io/github/WebGoat/WebGoat?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/b69ee3a86e3b4afcaf993f210fccfb1d)](https://www.codacy.com/app/dm/WebGoat)
 [![Dependency Status](https://www.versioneye.com/user/projects/562da95ae346d7000e0369aa/badge.svg?style=flat)](https://www.versioneye.com/user/projects/562da95ae346d7000e0369aa)
+[![OWASP Labs](https://img.shields.io/badge/owasp-labs-orange.svg)](https://www.owasp.org/index.php/OWASP_Project_Inventory#tab=Labs_Projects)
 
 # Important Information
 
@@ -52,29 +53,26 @@ The "Easy Run" JAR file offers a no hassle approach to testing and running WebGo
 wish to simply try/test/run the current development version of WebGoat
 
 ### Prerequisites:
-* Java VM >= 1.6 installed ( JDK 1.7 recommended)
+* Java VM 1.8
 
 ## Easy Run Instructions:
 
 #### 1. Download the easy run executable jar file which contains all the lessons and a embedded Tomcat server:
 
-https://s3.amazonaws.com/webgoat-war/webgoat-container-7.0.1-war-exec.jar
+https://s3.amazonaws.com/webgoat-war/webgoat-standalone-7.0.1-exec.jar
 
 #### 2. Run it using java:
 
 Open a command shell/window, browse to where you downloaded the easy run jar and type:
 
 ```Shell
-java -jar webgoat-container-7.0.1-war-exec.jar
+java -jar webgoat-standalone-7.0.1-exec.jar [-p | --p <port>] [-a | --address <address>]
 ```
 
-#### 3. Browse to [http://localhost:8080/WebGoat](http://localhost:8080/WebGoat) and happy hacking !
+Using the `--help` option will show the allowed command line arguments.
 
-#### (Optional) If you would like to change the port or other options, use the help command for guidance:
+#### 3. Browse to the url shown in the console and happy hacking !
 
-```Shell
-java -jar webgoat-container-7.0.1-war-exec.jar --help
-```
 
 # For Developers
 
@@ -82,7 +80,7 @@ Follow these instructions if you wish to run Webgoat and modify the source code 
 
 ### Prerequisites:
 
-* Java >= 1.6 ( JDK 1.7 recommended )
+* Java 1.8
 * Maven > 2.0.9
 * Your favorite IDE, with Maven awareness: Netbeans/IntelliJ/Eclipse with m2e installed.
 * Git, or Git support in your IDE
@@ -95,7 +93,7 @@ launch Tomcat listening on localhost:8080
 mkdir WebGoat-Workspace
 cd WebGoat-Workspace
 curl -o webgoat_developer_bootstrap.sh https://raw.githubusercontent.com/WebGoat/WebGoat/master/webgoat_developer_bootstrap.sh
-sh webgoat_developer_bootstrap.sh
+./webgoat_developer_bootstrap.sh
 ```
 
 ## The Manual Way: Developer Edition!
@@ -113,6 +111,7 @@ git clone https://github.com/WebGoat/WebGoat-Lessons.git
 
 ```Shell
 cd WebGoat
+git checkout develop
 mvn clean compile install
 cd ..
 ```
@@ -122,8 +121,10 @@ cd ..
 
 ```Shell
 cd WebGoat-Lessons
+git checkout develop
 mvn package
-cp target/plugins/*.jar ../WebGoat/webgoat-container/src/main/webapp/plugin_lessons/
+(linux)   cp target/plugins/*.jar ../WebGoat/webgoat-container/src/main/webapp/plugin_lessons/
+(windows) xcopy "target\plugins\*.jar" "..\WebGoat\webgoat-container\src\main\webapp\plugin_lessons\"
 cd ..
 ```
 
@@ -147,11 +148,11 @@ The __maven package__ goal generates an executable .jar file:
 ```Shell
 cd WebGoat
 mvn package
-cd webgoat-container/target
-java -jar webgoat-container-7.1-SNAPSHOT-war-exec.jar http://localhost:8080/WebGoat
+cd webgoat-standalone/target
+java -jar webgoat-standalone-7.1-SNAPSHOT-exec.jar [-p | --p <port>] [-a | --address <address>]
 ```
 
-Browse to [http://localhost:8080/WebGoat](http://localhost:8080/WebGoat) and happy hacking !
+Browse to url shown in the console and happy hacking !
 
 #### Option #3: Deploy the WebGoat WAR file in your local Tomcat or other Application Server:
 The __maven package__ goal generates a .war file that can deployed into an Application Server, such as Tomcat
