@@ -9,4 +9,9 @@ artifacts:
   files:
     - webgoat-server/target/webgoat-server-8.0-SNAPSHOT.jar
   discard-paths: yes
+on:
+  push:
+    branches:
+      - develop
+      - master
 
