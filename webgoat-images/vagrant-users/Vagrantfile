@@ -1,6 +1,3 @@
-#For now use the same as for developers but start WebGoat
-#In the future we can add Docker as well and then Vagrant can start the
-#Docker container or Chef which setups the Tomcat
 
 Vagrant.configure(2) do |config|
   config.vm.box = "boxcutter/ubuntu1604-desktop"
