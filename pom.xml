@@ -41,23 +41,23 @@
         </developer>
         <developer>
             <id>misfir3</id>
-            <name />
-            <email />
+            <name/>
+            <email/>
         </developer>
         <developer>
             <id>jwayman</id>
             <name>Jeff Wayman</name>
-            <email />
+            <email/>
         </developer>
         <developer>
             <id>dcowden</id>
             <name>Dave Cowden</name>
-            <email />
+            <email/>
         </developer>
         <developer>
             <id>lawson89</id>
             <name>Richard Lawson</name>
-            <email />
+            <email/>
         </developer>
         <developer>
             <id>dougmorato</id>
@@ -153,7 +153,7 @@
         <selenium-java.version>2.48.2</selenium-java.version>
         <slf4j-api.version>1.7.12</slf4j-api.version>
         <slf4j-log4j12.version>1.7.12</slf4j-log4j12.version>
-        <spring.security.version>3.2.4.RELEASE</spring.security.version>
+        <spring.security.version>5.7.12</spring.security.version>
         <standard.version>1.1.2</standard.version>
         <tiles.version>3.0.5</tiles.version>
         <tomcat-catalina.version>7.0.65</tomcat-catalina.version>
@@ -304,7 +304,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>${coveralls-maven-plugin.version}</version>
                 <configuration>
-                    <repoToken />
+                    <repoToken/>
                 </configuration>
             </plugin>
             <plugin>
@@ -312,7 +312,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura-maven-plugin.version}</version>
                 <configuration>
-                    <check />
+                    <check/>
                     <format>xml</format>
                     <maxmem>256m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
